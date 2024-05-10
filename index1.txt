@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>전기차 충전소 위치 표시</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=9u2pgs7nw2&submodules=geocoder"></script>
+</head>
+<body>
+<div id="map" style="width:100%;height:400px;"></div>
+<script>
+    var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+
+    // 서버에서 충전소 데이터를 가져오는 AJAX 요청
+    fetch('https://your-server.com/path/to/chargermap.json')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(function(charger) {
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(charger.lat, charger.lng),
+                map: map,
+                title: charger.name
+            });
+        });
+    })
+    .catch(error => console.error('Error loading the charger data:', error));
+</script>
+</body>
+</html>
